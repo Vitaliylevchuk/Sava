@@ -1,5 +1,7 @@
 package org.fbs.sava.data;
 
+import java.util.ArrayList;
+
 public class SaveData {
 
     public SaveData(int id, String name){
@@ -33,3 +35,16 @@ class SaveValue <T> extends SaveData{
     }
 }
 
+class SaveValueArray <T> extends SaveData{
+  
+  public SaveValueArray(T ... elements){
+    array.asList(elements);
+  }
+  
+  private final ArrayList<T> array = new ArrayList<>();
+  
+  public T getElementById(int id){
+    return array.get(id);
+  }
+  
+}

@@ -6,7 +6,7 @@ public class Compiler {
 
     private File saveFile;
 
-    public void setSaveFile(File saveFile) {
+    public Compiler(File saveFile) {
         this.saveFile = saveFile;
     }
 
