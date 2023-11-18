@@ -9,8 +9,8 @@ public class SaveData {
         this.name = name;
     }
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     public int getId() {
         return id;
@@ -35,15 +35,19 @@ class SaveValue <T> extends SaveData{
     }
 }
 
-class SaveValueArray <T> extends SaveData{
-  
-  public SaveValueArray(T ... elements){
-    array.asList(elements);
+class SaveValueArray <T> extends SaveValue<T>{
+
+  @SafeVarargs
+  public SaveValueArray(String name, int id, T ... elements){
+      super(elements[0], 0, "");
+      for (int i = 0; i < elements.length; i++) {
+          array.add(i, new SaveValue<T>(elements[i], i, "" + elements[i] + "" + i));
+      }
   }
   
-  private final ArrayList<T> array = new ArrayList<>();
+  private final ArrayList<SaveValue<T>> array = new ArrayList<>();
   
-  public T getElementById(int id){
+  public SaveValue<T> getElementById(int id){
     return array.get(id);
   }
   
