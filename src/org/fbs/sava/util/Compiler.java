@@ -10,6 +10,8 @@ public class Compiler {
         this.saveFile = saveFile;
     }
 
-    // TODO: 13.11.2023  
+    private void compile(){
+        // TODO: 19.11.2023  
+    }
 
 }

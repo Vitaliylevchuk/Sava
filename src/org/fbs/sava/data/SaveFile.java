@@ -4,6 +4,26 @@ import java.util.ArrayList;
 
 public class SaveFile {
 
-    private final ArrayList <SaveData> fileData = new ArrayList<SaveData>();
+    public SaveFile(ArrayList<SaveData> contents){
+        fileData = contents;
+    }
+
+    private final ArrayList <SaveData> fileData;
+
+    public SaveData getByIndex(int index){
+        return fileData.get(index);
+    }
+
+    public ArrayList <SaveData> getByType(ValueType type){
+
+        ArrayList <SaveData> saveData = new ArrayList<>();
+
+        for (int i = 0; i < fileData.size(); i++) {
+            if (fileData.get(i).getValueType() == type){
+                saveData.add(fileData.get(i));
+            }
+        }
+        return saveData;
+    }
 
 }
