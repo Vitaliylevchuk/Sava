@@ -26,4 +26,30 @@ public class SaveFile {
         return saveData;
     }
 
+    public ArrayList <SaveData> getByName(String name){
+
+        ArrayList <SaveData> saveData = new ArrayList<>();
+
+        for (int i = 0; i < fileData.size(); i++) {
+            if (fileData.get(i).getName() == name){
+                saveData.add(fileData.get(i));
+            }
+        }
+        return saveData;
+
+    }
+
+    public ArrayList <SaveData> getById(int id){
+
+        ArrayList <SaveData> saveData = new ArrayList<>();
+
+        for (int i = 0; i < fileData.size(); i++) {
+            if (fileData.get(i).getId() == id){
+                saveData.add(fileData.get(i));
+            }
+        }
+        return saveData;
+
+    }
+
 }
