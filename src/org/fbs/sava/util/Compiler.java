@@ -17,8 +17,9 @@ public class Compiler {
     private void compile() throws IOException {
         SaveFileReader saveFileReader = new SaveFileReader(saveFile);
         textFile = saveFileReader.getTextLines();
+
+        
+
     }
-
-
 
 }
