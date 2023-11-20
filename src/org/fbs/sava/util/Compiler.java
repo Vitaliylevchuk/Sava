@@ -18,8 +18,6 @@ public class Compiler {
         SaveFileReader saveFileReader = new SaveFileReader(saveFile);
         textFile = saveFileReader.getTextLines();
 
-        
-
     }
 
 }
