@@ -1,7 +1,5 @@
 # Sava
 
-
-
 ## Standard structures
 
 * **val**
