@@ -5,7 +5,8 @@ import java.io.IOException;
 
 public class Compiler {
 
-    private File saveFile;
+    private final File saveFile;
+    private String textFile;
 
     public Compiler(File saveFile) throws IOException {
         this.saveFile = saveFile;
@@ -14,6 +15,9 @@ public class Compiler {
 
     private void compile() throws IOException {
         SaveFileReader saveFileReader = new SaveFileReader(saveFile);
+        textFile = saveFileReader.getFileText();
     }
+
+
 
 }

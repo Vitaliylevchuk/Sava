@@ -2,7 +2,6 @@ package org.fbs.sava.util;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class SaveFileReader {
 
@@ -23,19 +22,22 @@ public class SaveFileReader {
 
         BufferedReader reader = new BufferedReader(new FileReader(file));
         int targetSymbol = reader.read();
+        int nextLineCombo = 0;
         ArrayList<Character> line = new ArrayList<>();
 
         while (targetSymbol != -1){
-            if (targetSymbol == 10){
+            if (targetSymbol == 10 && nextLineCombo == 0){
                 StringBuilder stringBuilder = new StringBuilder();
                 for (Character ch : line) {
                     stringBuilder.append(ch);
                 }
                 fileText += stringBuilder + "\n";
                 line.clear();
+                nextLineCombo += 1;
             }
-            else {
+            else if (targetSymbol != 10){
                 line.add((char) targetSymbol);
+                nextLineCombo = 0;
             }
             targetSymbol = reader.read();
         }
