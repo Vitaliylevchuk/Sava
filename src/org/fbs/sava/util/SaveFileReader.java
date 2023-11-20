@@ -10,8 +10,12 @@ public class SaveFileReader {
     public String getFileText() {
         return fileText;
     }
+    public ArrayList<String> getTextLines(){
+        return textLines;
+    }
 
     private String fileText = "";
+    private ArrayList<String> textLines = new ArrayList<>();
 
     public SaveFileReader(File file) throws IOException {
         this.file = file;
@@ -32,6 +36,7 @@ public class SaveFileReader {
                     stringBuilder.append(ch);
                 }
                 fileText += stringBuilder + "\n";
+                textLines.add(stringBuilder.toString());
                 line.clear();
                 nextLineCombo += 1;
             }

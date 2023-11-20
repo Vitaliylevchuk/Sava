@@ -2,11 +2,12 @@ package org.fbs.sava.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Compiler {
 
     private final File saveFile;
-    private String textFile;
+    private ArrayList<String> textFile = new ArrayList<>();
 
     public Compiler(File saveFile) throws IOException {
         this.saveFile = saveFile;
@@ -15,7 +16,7 @@ public class Compiler {
 
     private void compile() throws IOException {
         SaveFileReader saveFileReader = new SaveFileReader(saveFile);
-        textFile = saveFileReader.getFileText();
+        textFile = saveFileReader.getTextLines();
     }
 
 
