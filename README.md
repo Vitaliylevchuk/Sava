@@ -4,7 +4,6 @@
 
 ## Standard structures
 
-
 * **val**
 * **array**
 
