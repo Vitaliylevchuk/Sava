@@ -35,16 +35,32 @@ public class SaveFileReader {
                 for (Character ch : line) {
                     stringBuilder.append(ch);
                 }
-                fileText += stringBuilder + "\n";
-                textLines.add(stringBuilder.toString());
+                String targetLine = stringBuilder.toString();
+                if (!targetLine.isBlank()){
+                    fileText += targetLine.trim() + "\n";
+                    textLines.add(targetLine.trim());
+                    nextLineCombo++;
+                }
                 line.clear();
-                nextLineCombo += 1;
             }
             else if (targetSymbol != 10){
                 line.add((char) targetSymbol);
                 nextLineCombo = 0;
             }
             targetSymbol = reader.read();
+        }
+        if(targetSymbol == -1){
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Character ch : line) {
+                stringBuilder.append(ch);
+            }
+            String targetLine = stringBuilder.toString();
+            if (!targetLine.isBlank()){
+                fileText += targetLine.trim() + "\n";
+                textLines.add(targetLine.trim());
+                nextLineCombo++;
+            }
+            line.clear();
         }
 
     }

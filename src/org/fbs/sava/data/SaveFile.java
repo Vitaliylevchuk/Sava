@@ -19,7 +19,10 @@ public class SaveFile {
         ArrayList <SaveData> saveData = new ArrayList<>();
 
         for (int i = 0; i < fileData.size(); i++) {
-            if (fileData.get(i).getValueType() == type){
+            if (type == ValueType.All){
+                saveData.add(fileData.get(i));
+            }
+            else if (fileData.get(i).getValueType() == type){
                 saveData.add(fileData.get(i));
             }
         }

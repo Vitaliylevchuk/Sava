@@ -59,5 +59,5 @@ class SaveValueArray <T> extends SaveData{
 }
 
 enum ValueType{
-    VALUE, ARRAY
+    VALUE, ARRAY, All
 }
