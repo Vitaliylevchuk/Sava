@@ -7,11 +7,11 @@
 
 ## Standard data types
 
-| Sava typing | Java typing | Description |
-|-------------|-------------|-------------|
-| long        | long        |             |
-| double      | double      |             |
-| int         | int         |             |
-| str         | String      |             |
-| char        | char        |             |
-
+| Sava typing | Java typing |
+|-------------|-------------|
+| long        | long        |
+| double      | double      |
+| int         | int         |
+| str         | String      |
+| char        | char        |
+| bool        | boolean     |
