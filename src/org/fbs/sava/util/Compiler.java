@@ -20,6 +20,7 @@ public class Compiler {
     }
 
     public Compiler(File file) throws IOException, SaveFileException {
+
         this.file = file;
         compile();
     }
@@ -40,7 +41,7 @@ public class Compiler {
                     String [] words = line.split(" ");
                     for (String word: words) {
                         if (new SaveStructure(saveFile).isReservedWord(word)){
-                            // TODO: 21.11.2023  
+                            // TODO: 21.11.2023
                         }
                     }
                 }

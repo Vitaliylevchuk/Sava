@@ -1,19 +1,18 @@
 package org.fbs.sava;
 
+import org.fbs.sava.controller.CompileController;
 import org.fbs.sava.exception.SaveFileException;
-import org.fbs.sava.util.Compiler;
+
 import java.io.File;
 import java.io.IOException;
 
 public class Test {
 
-    public static void main(String[] args) throws IOException, SaveFileException {
-        Compiler compiler = new Compiler(new File("/home/vitaliy/IdeaProjects/Sava/test.txt"));
+    public static void main(String[] args) throws SaveFileException, IOException {
 
-        for (String str : compiler.getTextFile()) {
-            System.out.println(str);
-        }
-        
+        CompileController compileController = new CompileController(new File("/home/vitaliy/IdeaProjects/Sava/"), true);
+        System.out.println(compileController.files.size());
+
     }
 
 }
