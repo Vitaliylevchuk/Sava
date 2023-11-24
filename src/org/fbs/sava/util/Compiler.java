@@ -1,5 +1,6 @@
 package org.fbs.sava.util;
 
+import org.fbs.sava.data.CustomSaveStructure;
 import org.fbs.sava.data.SaveFile;
 import org.fbs.sava.data.SaveStructure;
 import org.fbs.sava.exception.*;
@@ -11,6 +12,7 @@ public class Compiler {
 
     private final File file;
     private ArrayList<String> textFile = new ArrayList<>();
+    private SaveStructure saveStructure;
     private SaveFile saveFile;
     public SaveFile getSaveFile() {
         return saveFile;
@@ -19,10 +21,17 @@ public class Compiler {
         return textFile;
     }
 
-    public Compiler(File file) throws IOException, SaveFileException {
-
+    public Compiler(File file, CustomSaveStructure[] customStructures) throws IOException, SaveFileException {
+        if (file.isDirectory()){
+            throw new InputParameterException(file.getAbsolutePath() + " is directory, must be file.");
+        }
+        saveStructure = new SaveStructure(customStructures, saveFile);
         this.file = file;
         compile();
+    }
+
+    public SaveFile getCompiledSave(){
+        return saveFile;
     }
 
     public void compile() throws IOException, EmptyFileException, OperatorException {
@@ -40,8 +49,9 @@ public class Compiler {
 
                     String [] words = line.split(" ");
                     for (String word: words) {
-                        if (new SaveStructure(saveFile).isReservedWord(word)){
-                            // TODO: 21.11.2023
+                        boolean useCustomStructures = saveStructure.getCustomStructuresLength() > 0;
+                        if (saveStructure.isReservedWord(word, useCustomStructures)){
+                            // TODO: 24.11.2023  
                         }
                     }
                 }
