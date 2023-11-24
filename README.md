@@ -29,9 +29,10 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
 ### Starting
 
 * If you want to compile folder with files:
-> Implement the [CompileController](src/org/fbs/sava/controller/CompileController.java) class by passing it a folder with save files (files with the .sava extension), if there are none there, set the `hasFiles` parameter to _false_. 
-
+> Implement the [CompileController](src/org/fbs/sava/controller/CompileController.java) class by passing it a folder with save files (files with the .sava extension), if there are none there, set the `hasFiles` parameter to _false_. After use method `getCompiledSaves()` to get array with [SaveFile](src/org/fbs/sava/data/SaveFile.java) objects.
 -------------
+* If you want to compile only one file:
+> Implement the [Compiler](src/org/fbs/sava/util/Compiler.java) class and transfer the save file(file with the .sava extension), after use method `getCompiledSave()` to get [SaveFile](src/org/fbs/sava/data/SaveFile.java) object.
 
 ## Download
 
