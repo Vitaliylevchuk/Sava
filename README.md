@@ -1,3 +1,3 @@
 # Sava
 
-> Documentation will come out 20th November!
+> Documentation will come out with first origin:master commit.
