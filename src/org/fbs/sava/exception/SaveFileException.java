@@ -1,6 +1,8 @@
 package org.fbs.sava.exception;
 
-public class SaveFileException extends Exception{
+import java.io.IOException;
+
+public class SaveFileException extends IOException {
 
     public SaveFileException(String errorMessage) {
         super(errorMessage);

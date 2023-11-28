@@ -1,9 +1,7 @@
 package org.fbs.sava.controller;
 
 import org.fbs.sava.data.SaveFile;
-import org.fbs.sava.exception.EmptyFileException;
-import org.fbs.sava.exception.InputParameterException;
-import org.fbs.sava.exception.OperatorException;
+import org.fbs.sava.exception.ParameterException;
 import org.fbs.sava.exception.SaveFileException;
 import org.fbs.sava.util.Compiler;
 import org.jetbrains.annotations.NotNull;
@@ -16,20 +14,21 @@ import java.util.Random;
 
 public class CompileController {
 
-    private final boolean hasFiles;
-    private ArrayList<File> files = new ArrayList<>();
-    private final Compiler compiler;
+    private final ArrayList<File> files = new ArrayList<>();
+    private final Compiler[] compilers;
 
-    public CompileController(@NotNull File savePackage, boolean hasFiles, Compiler compiler) throws SaveFileException, IOException {
-        this.hasFiles = hasFiles;
-        this.compiler = compiler;
+    public CompileController(@NotNull File savePackage, boolean hasFiles) throws IOException {
         if (savePackage.isFile()){
-            throw new InputParameterException(savePackage.getAbsolutePath() + " is file, must be directory.");
+            throw new ParameterException(savePackage.getAbsolutePath() + " is file, must be directory.");
         }
 
         if (hasFiles){
+            compilers = new Compiler[savePackage.listFiles().length];
             String extension = "";
             for (File file : Objects.requireNonNull(savePackage.listFiles())) {
+                if (file.isDirectory()){
+                    continue;
+                }
                 try {
                     extension = getExtension(file);
                 } catch (SaveFileException ignored) {extension = "." + ((new Random()).nextInt(0, 99999999)); }
@@ -42,17 +41,20 @@ public class CompileController {
         else {
             files.add(new File(savePackage.getAbsoluteFile() + "/save0.sava"));
             files.get(0).createNewFile();
+            compilers = new Compiler[savePackage.listFiles().length];
         }
         if (files.isEmpty()){
-            throw new InputParameterException("Package " + savePackage.getAbsolutePath() + " does not have .sava files.");
+            throw new ParameterException("Package " + savePackage.getAbsolutePath() + " does not have .sava files.");
         }
     }
 
-    public SaveFile[] getCompiledSaves() throws EmptyFileException, IOException, OperatorException {
+    public SaveFile[] getCompiledSaves() throws IOException{
         SaveFile[] compiled = new SaveFile[files.size()];
-        compiler.compile();
+        for (Compiler compiler: compilers){
+            compiler.compile();
+        }
         for (int i = 0; i < compiled.length; i++) {
-            compiled[i] = compiler.getCompiledSave();
+            compiled[i] = compilers[i].getCompiledSave();
         }
         return compiled;
     }

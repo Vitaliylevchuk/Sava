@@ -1,41 +1,40 @@
 package org.fbs.sava.data;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SaveFile {
 
+    public SaveFile(){}
     public SaveFile(ArrayList<SaveData> contents){
         fileData = contents;
     }
 
-    private final ArrayList <SaveData> fileData;
+    private ArrayList <SaveData> fileData = new ArrayList<>();
 
+    public void addData(SaveData data){
+        fileData.add(data);
+    }
     public SaveData getByIndex(int index){
         return fileData.get(index);
     }
 
-    public ArrayList <SaveData> getByType(ValueType type){
-
-        ArrayList <SaveData> saveData = new ArrayList<>();
-
-        for (int i = 0; i < fileData.size(); i++) {
-            if (type == ValueType.All){
-                saveData.add(fileData.get(i));
-            }
-            else if (fileData.get(i).getValueType() == type){
-                saveData.add(fileData.get(i));
-            }
+    public ArrayList <SaveData> getAll(){
+        try {
+            return fileData;
         }
-        return saveData;
+        catch (NullPointerException e){
+            return null;
+        }
     }
 
     public ArrayList <SaveData> getByName(String name){
 
         ArrayList <SaveData> saveData = new ArrayList<>();
 
-        for (int i = 0; i < fileData.size(); i++) {
-            if (fileData.get(i).getName() == name){
-                saveData.add(fileData.get(i));
+        for (SaveData fileDatum : fileData) {
+            if (Objects.equals(fileDatum.getName(), name)) {
+                saveData.add(fileDatum);
             }
         }
         return saveData;
@@ -46,9 +45,9 @@ public class SaveFile {
 
         ArrayList <SaveData> saveData = new ArrayList<>();
 
-        for (int i = 0; i < fileData.size(); i++) {
-            if (fileData.get(i).getId() == id){
-                saveData.add(fileData.get(i));
+        for (SaveData fileDatum : fileData) {
+            if (fileDatum.getId() == id) {
+                saveData.add(fileDatum);
             }
         }
         return saveData;
