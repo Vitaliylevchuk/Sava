@@ -13,11 +13,10 @@ public class Test {
 
         Compiler compiler = new Compiler(new File("/home/vitaliy/IdeaProjects/Sava/test.sava"));
         SaveFile saveFile = compiler.getCompiledSave();
-
-
+        
         for (SaveData data : saveFile.getAll()){
             System.out.println(data.getValue() + " " + data.getName() + " " + data.getId());
         }
-        System.out.println(saveFile.getByName("a").size());
+        System.out.println(saveFile.getByName("a").getType());
     }
 }

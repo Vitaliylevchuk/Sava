@@ -2,6 +2,8 @@ package org.fbs.sava.util;
 
 import org.fbs.sava.data.*;
 import org.fbs.sava.exception.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class Compiler {
         return textFile;
     }
 
-    public Compiler(File file) throws IOException{
+    public Compiler(@NotNull File file) throws IOException{
         if (file.isDirectory()){
             throw new ParameterException(file.getAbsolutePath() + " is directory, must be file.");
         }
@@ -78,6 +80,7 @@ public class Compiler {
                                         continue;
                                     }
                                     case 2:{
+
                                         type = word;
                                         if (!Arrays.asList(SaveStructure.dataType).contains(word)){
                                             throw new StandardSyntaxException("Unknown data type: " + word);
@@ -91,6 +94,26 @@ public class Compiler {
                                         }
                                         else {
                                             id = (name + type).hashCode();
+                                            if (Arrays.asList(new String[]{"long", "double", "int"}).contains(type)){
+                                                StringBuilder newWord = new StringBuilder();
+                                                for (char ch : word.toCharArray()){
+                                                    if (Arrays.asList(new Character[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'}).contains(ch)){
+                                                        newWord.append(ch);
+                                                    }
+                                                }
+                                                word = newWord.toString();
+                                            }
+                                            else if (Objects.equals(type, "bool")){
+                                                if (word.contains("true") || word.contains("false")){
+                                                    if (word.contains("true")){
+                                                        word = "true";
+                                                    }
+                                                    else{
+                                                        word = "false";
+                                                    }
+                                                }
+                                            }
+                                            System.out.println(word);
                                             switch (type){
                                                 case "long":{
                                                     try {
@@ -146,7 +169,16 @@ public class Compiler {
                                                 }
                                                 case "str":{
                                                     if (word.indexOf("\"") != word.lastIndexOf("\"") && word.contains("\"") && word.toCharArray()[word.toCharArray().length-1] == '\"'){
+                                                        word = word.replaceAll("\"", "");
+                                                        word = word.trim();
                                                         saveFile.addData(new SaveValue<String>(word, id, name));
+                                                        type = "";
+                                                        isOnCreatingStruct = false;
+                                                        selectedStruct[0] = false;
+                                                        phase = 1;
+                                                    }
+                                                    else if (line.contains("\"") && (line.indexOf("\"") != list.lastIndexOf("\""))){
+                                                        saveFile.addData(new SaveValue<String>(getBetween(line, '\"'), id, name));
                                                         type = "";
                                                         isOnCreatingStruct = false;
                                                         selectedStruct[0] = false;
@@ -156,28 +188,7 @@ public class Compiler {
                                                         throw new StandardSyntaxException("\" expected.");
                                                     }
 
-                                                    if (word.indexOf("\"") == word.lastIndexOf("\"") && word.contains("\"") && word.toCharArray()[word.toCharArray().length-1] != '\"'){
-                                                        string += word.replaceAll("\"", "");
-                                                        readStr = true;
-                                                    }
-                                                    if (readStr){
-                                                        if (word.toCharArray()[word.toCharArray().length-1] == '\"'){
-                                                            string += word.replaceAll("\"", "");
-                                                            saveFile.addData(new SaveValue<String>(string, id, name));
-                                                            type = "";
-                                                            isOnCreatingStruct = false;
-                                                            selectedStruct[0] = false;
-                                                            phase = 1;
-                                                            readStr = false;
-                                                            string = "";
-                                                            break;
-                                                        }
-                                                        else {
-                                                            string += word;
-                                                        }
-                                                    }
-
-                                                    continue;
+                                                    break;
                                                 }
                                                 case "char":{
                                                     try {
@@ -267,26 +278,16 @@ public class Compiler {
                                                     if (word.indexOf("\"") != word.lastIndexOf("\"") && word.contains("\"") && word.toCharArray()[word.toCharArray().length-1] == '\"'){
                                                         string += word.replaceAll("\"", "");
                                                         list.add(string);
-                                                        readStr = false;
                                                     }
-                                                    else if (word.indexOf("\"") == word.lastIndexOf("\"") && word.contains("\"") && word.toCharArray()[word.toCharArray().length-1] != '\"'){
-                                                        string += word.replaceAll("\"", "");
-                                                        readStr = true;
-                                                    }
-                                                    if (readStr) {
-                                                        if (word.toCharArray()[word.toCharArray().length - 1] == '\"') {
-                                                            if (isEnd){
-                                                                phase = 4;
+                                                    else{
+                                                        String arrayData = getBetween(line, '{', '}');
+                                                        String[] arrayContents = arrayData.split(",");
+                                                        for (String content: arrayContents){
+                                                            if (content.indexOf("\"") != content.lastIndexOf("\"") && content.contains("\"")){
+                                                                string += getBetween(content.trim(), '"').replaceAll("\"", "");
+                                                                list.add(string);
                                                             }
-                                                            string += word.replaceAll("\"", "");
-                                                            list.add(string);
-                                                            readStr = false;
-                                                            string = "";
                                                         }
-                                                        else {
-                                                            string += word;
-                                                        }
-                                                        continue;
                                                     }
                                                 }
                                             }
@@ -391,6 +392,46 @@ public class Compiler {
             throw new EmptyFileException(file.getName());
         }
 
+        if (textFile.size() != saveFile.getAll().size()){
+            System.out.println("\u001B[33m" + "The number of structures does not correspond to the number of values, perhaps you made a mistake." + "\u001B[0m");
+        }
+        saveFile.setFinale();
+
+    }
+
+    public String getBetween(@NotNull String string, char symbol){
+        StringBuilder str = new StringBuilder();
+        boolean reading = false;
+        for (char ch: string.toCharArray()) {
+            if (ch == symbol){
+                if (reading){
+                    break;
+                }
+                reading = true;
+                continue;
+            }
+            if (reading){
+                str.append(ch);
+            }
+        }
+        return str.toString();
+    }
+    public String getBetween(@NotNull String string, char symbolStart, char symbolStop){
+        StringBuilder str = new StringBuilder();
+        boolean reading = false;
+        for (char ch: string.toCharArray()) {
+            if (ch == symbolStart){
+                reading = true;
+                continue;
+            }
+            else if (ch == symbolStop){
+                break;
+            }
+            if (reading){
+                str.append(ch);
+            }
+        }
+        return str.toString();
     }
 
 }

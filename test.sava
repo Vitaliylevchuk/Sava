@@ -1,3 +1,2 @@
-
 val a int = 0;
-val b bool = true;
+val b int = 2;
