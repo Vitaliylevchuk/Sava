@@ -1,22 +1,22 @@
 package org.fbs.sava.data;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SaveValueArray<T> extends SaveData {
 
-    @SafeVarargs
-    public SaveValueArray(String name, int id, T @NotNull ... elements) {
+
+    public SaveValueArray(String name, int id, List<T> elements) {
         super(id, name, SaveType.ARRAY);
-        for (int i = 0; i < elements.length; i++) {
-            array.add(i, new SaveValue<T>(elements[i], i, "" + elements[i] + "" + i));
-        }
+        array.addAll(elements);
     }
 
-    private final ArrayList<SaveValue<T>> array = new ArrayList<>();
-    public SaveValue<T> getElementById(int id) {
-        return array.get(id);
+    private final ArrayList<Object> array = new ArrayList<>();
+
+    @Override
+    public List<Object> getValues(){
+        return Collections.unmodifiableList(array);
     }
 
 }

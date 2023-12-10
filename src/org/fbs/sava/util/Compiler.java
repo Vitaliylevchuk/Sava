@@ -6,14 +6,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Compiler {
 
     private final File file;
+    private int comments = 0;
     private ArrayList<String> textFile = new ArrayList<>();
     private final SaveStructure saveStructure;
     private SaveFile saveFile = new SaveFile();
@@ -43,6 +41,7 @@ public class Compiler {
             for (String str: textFile) {
 
                 if (str.contains("//")){
+                    comments ++;
                     continue;
                 }
                 if(str.indexOf(';') == -1 || !(str.lastIndexOf(';') == str.toCharArray().length-1)){
@@ -51,10 +50,8 @@ public class Compiler {
 
                 for (String line: str.split(";")) {
 
-                    System.out.println(line);
-
                     if (line.toCharArray().length == 0){
-                        throw new StandardSyntaxException("Empty line " + str);
+                        throw new StandardSyntaxException("Empty file.");
                     }
 
                     String [] words = line.split(" ");
@@ -113,7 +110,6 @@ public class Compiler {
                                                     }
                                                 }
                                             }
-                                            System.out.println(word);
                                             switch (type){
                                                 case "long":{
                                                     try {
@@ -224,9 +220,6 @@ public class Compiler {
                                         continue;
                                     }
                                     case 3: {
-                                        if ((word.contains("{") && word.toCharArray().length == 1)||(word.contains(",") && word.toCharArray().length == 1)) {
-                                            continue;
-                                        }
                                         if ((word.contains("{") && word.toCharArray().length != 1)||(word.contains(",") && word.toCharArray().length != 1)){
                                             word = word.replace("{", "");
                                         }
@@ -240,64 +233,73 @@ public class Compiler {
                                             }
                                             switch (type){
                                                 case "int":{
-                                                    list.add(Integer.valueOf(word));
-                                                    if (isEnd){
-                                                        phase = 4;
+                                                    String arrayData = getBetween(line, '{', '}');
+                                                    List<String> arrayContents = detailedSplit(arrayData, ',');
+                                                    for (String content: arrayContents){
+                                                        list.add(Integer.valueOf(content.replaceAll(",", "").trim()));
                                                     }
+                                                    phase ++;
                                                     continue;
                                                 }
                                                 case "double":{
-                                                    list.add(Double.valueOf(word));
-                                                    if (isEnd){
-                                                        phase = 4;
+                                                    String arrayData = getBetween(line, '{', '}');
+                                                    List<String> arrayContents = detailedSplit(arrayData, ',');
+                                                    for (String content: arrayContents){
+                                                        list.add(Double.valueOf(content.replaceAll(",", "").trim()));
                                                     }
+                                                    phase ++;
                                                     continue;
                                                 }
                                                 case "char":{
                                                     list.add((word).replaceAll("'", "").toCharArray()[0]);
-                                                    if (isEnd){
-                                                        phase = 4;
+                                                    String arrayData = getBetween(line, '{', '}');
+                                                    List<String> arrayContents = detailedSplit(arrayData, ',');
+                                                    for (String content: arrayContents){
+                                                        if (content.indexOf("'") != content.lastIndexOf("'") && content.contains("'")){
+                                                            string = getBetween(content, '\'').trim();
+                                                            list.add((string).toCharArray()[0]);
+                                                        }
                                                     }
+                                                    phase ++;
                                                     continue;
                                                 }
                                                 case "bool":{
-                                                    list.add(Boolean.valueOf(word));
-                                                    if (isEnd){
-                                                        phase = 4;
+                                                    String arrayData = getBetween(line, '{', '}');
+                                                    List<String> arrayContents = detailedSplit(arrayData, ',');
+                                                    for (String content: arrayContents){
+                                                        list.add(Boolean.valueOf(content.replaceAll(",", "").trim()));
                                                     }
+                                                    phase ++;
                                                     continue;
                                                 }
                                                 case "long":{
-                                                    list.add(Long.valueOf(word));
-                                                    if (isEnd){
-                                                        phase = 4;
+                                                    String arrayData = getBetween(line, '{', '}');
+                                                    List<String> arrayContents = detailedSplit(arrayData, ',');
+                                                    for (String content: arrayContents){
+                                                        list.add(Long.valueOf(content.replaceAll(",", "").trim()));
                                                     }
+                                                    phase ++;
                                                     continue;
                                                 }
                                                 case "str":{
-                                                    if (word.indexOf("\"") != word.lastIndexOf("\"") && word.contains("\"") && word.toCharArray()[word.toCharArray().length-1] == '\"'){
-                                                        string += word.replaceAll("\"", "");
-                                                        list.add(string);
-                                                    }
-                                                    else{
-                                                        String arrayData = getBetween(line, '{', '}');
-                                                        String[] arrayContents = arrayData.split(",");
-                                                        for (String content: arrayContents){
-                                                            if (content.indexOf("\"") != content.lastIndexOf("\"") && content.contains("\"")){
-                                                                string += getBetween(content.trim(), '"').replaceAll("\"", "");
-                                                                list.add(string);
-                                                            }
+                                                    String arrayData = getBetween(line, '{', '}');
+                                                    List<String> arrayContents = detailedSplit(arrayData, ',');
+                                                    for (String content: arrayContents){
+                                                        if (content.indexOf("\"") != content.lastIndexOf("\"") && content.contains("\"")){
+                                                            string = getBetween(content, '"');
+                                                            list.add(string);
                                                         }
                                                     }
+                                                    phase ++;
                                                 }
                                             }
                                         }
                                     }
                                     case 4:{
                                         switch (type){
-                                            case "int":{
+                                            case "int", "double", "long", "bool":{
                                                 try {
-                                                    saveFile.addData(new SaveValueArray<Integer>(name, id, (Integer[]) list.toArray()));
+                                                    saveFile.addData(new SaveValueArray<>(name, id, list));
                                                     type = "";
                                                     isOnCreatingStruct = false;
                                                     selectedStruct[1] = false;
@@ -308,60 +310,13 @@ public class Compiler {
                                                     throw new StandardSyntaxException("Incorrect value(s): " + list + " select right data type.");
                                                 }
                                             }
-                                            case "double":{
-                                                try {
-                                                    saveFile.addData(new SaveValueArray<Double>(name, id, (Double[]) list.toArray()));
-                                                    type = "";
-                                                    isOnCreatingStruct = false;
-                                                    selectedStruct[1] = false;
-                                                    phase = 1;
-                                                    break;
-                                                }
-                                                catch (ClassCastException e){
-                                                    throw new StandardSyntaxException("Incorrect value(s): " + list + " select right data type.");
-                                                }
-                                            }
-                                            case "long":{
-                                                try {
-                                                    saveFile.addData(new SaveValueArray<Long>(name, id, (Long[]) list.toArray()));
-                                                    type = "";
-                                                    isOnCreatingStruct = false;
-                                                    selectedStruct[1] = false;
-                                                    phase = 1;
-                                                    break;
-                                                }
-                                                catch (ClassCastException e){
-                                                    throw new StandardSyntaxException("Incorrect value(s): " + list + " select right data type.");
-                                                }
-                                            }
-                                            case "char":{
-                                                saveFile.addData(new SaveValueArray<Character>(name, id, (Character[]) list.toArray()));
+                                            case "char", "str":{
+                                                saveFile.addData(new SaveValueArray<>(name, id, list));
                                                 type = "";
                                                 isOnCreatingStruct = false;
                                                 selectedStruct[1] = false;
                                                 phase = 1;
                                                 break;
-                                            }
-                                            case "str":{
-                                                saveFile.addData(new SaveValueArray<String>(name, id, (String[]) list.toArray()));
-                                                type = "";
-                                                isOnCreatingStruct = false;
-                                                selectedStruct[1] = false;
-                                                phase = 1;
-                                                break;
-                                            }
-                                            case "bool":{
-                                                try {
-                                                    saveFile.addData(new SaveValueArray<Boolean>(name, id, (Boolean[]) list.toArray()));
-                                                    type = "";
-                                                    isOnCreatingStruct = false;
-                                                    selectedStruct[1] = false;
-                                                    phase = 1;
-                                                    break;
-                                                }
-                                                catch (ClassCastException e){
-                                                    throw new StandardSyntaxException("Incorrect value(s): " + list + " select right data type.");
-                                                }
                                             }
                                         }
                                     }
@@ -392,7 +347,7 @@ public class Compiler {
             throw new EmptyFileException(file.getName());
         }
 
-        if (textFile.size() != saveFile.getAll().size()){
+        if ((textFile.size() - comments) != saveFile.getAll().size()){
             System.out.println("\u001B[33m" + "The number of structures does not correspond to the number of values, perhaps you made a mistake." + "\u001B[0m");
         }
         saveFile.setFinale();
@@ -402,16 +357,18 @@ public class Compiler {
     public String getBetween(@NotNull String string, char symbol){
         StringBuilder str = new StringBuilder();
         boolean reading = false;
-        for (char ch: string.toCharArray()) {
-            if (ch == symbol){
-                if (reading){
-                    break;
+        for (int i = 0; i < string.toCharArray().length; i++) {
+            if (string.toCharArray()[i] == symbol){
+                if (string.toCharArray()[i-1] != '\\'){
+                    if (reading) {
+                        break;
+                    }
+                    reading = true;
+                    continue;
                 }
-                reading = true;
-                continue;
             }
             if (reading){
-                str.append(ch);
+                str.append(string.toCharArray()[i]);
             }
         }
         return str.toString();
@@ -432,6 +389,25 @@ public class Compiler {
             }
         }
         return str.toString();
+    }
+    public List<String> detailedSplit(@NotNull String string, char symbol){
+        ArrayList<String> str = new ArrayList<>();
+        char[] stringChars = string.toCharArray();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < stringChars.length; i++) {
+            stringBuilder.append(stringChars[i]);
+            try {
+                if (stringChars[i] == symbol && stringChars[i - 1] != '\\') {
+                    str.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.length()-1);
+                }
+            }
+            catch (ArrayIndexOutOfBoundsException e){
+                stringBuilder.delete(0, stringBuilder.length()-1);
+            }
+        }
+        str.add(stringBuilder.toString());
+        return Collections.unmodifiableList(str);
     }
 
 }

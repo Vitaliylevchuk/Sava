@@ -1,2 +1,4 @@
 val a int = 0;
 val b int = 2;
+array weekDays str { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+//Release soon

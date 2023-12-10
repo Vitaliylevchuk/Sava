@@ -6,24 +6,40 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
 
 ## Documentation 
 
+<!-- TOC -->
+* [Sava](#sava)
+  * [Documentation](#documentation-)
+    * [Data types](#data-types)
+    * [Value types](#value-types)
+    * [Starting](#starting)
+  * [Download](#download)
+  * [Changelog](#changelog)
+  * [Contact](#contact)
+  * [Thanks](#thanks)
+<!-- TOC -->
+
 ### Data types
 
 | Sava typing | Java typing |
 |-------------|-------------|
-| long        | long        |
-| double      | double      |
-| int         | int         |
+| long        | Long        |
+| double      | Double      |
+| int         | Integer     |
 | str         | String      |
-| char        | char        |
-| bool        | boolean     |
+| char        | Character   |
+| bool        | Boolean     |
 
 ### Value types
 
 * **value**
 > Can store values of the same data type, can store both primitives and values of a custom data type and called with `val`.
+
+> 100% worked syntax(with name "mothsCount", type Integer and value 12) `val int a = 12;`
 -------------
 * **array**
 > Can store values of the same data type, You can access an element using: name, id or index, it can be called by `array`.
+
+> 100% worked syntax(with name "weekDays", type String and values "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday") `array weekDays str { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };`
 -------------
 
 ### Starting
@@ -37,6 +53,14 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
 ## Download
 
 You can download Sava here _see later_.
+
+## Changelog
+
+You can see Sava version changelog here _see later_.
+
+## Contact
+
+* [Fast Byte Solutions telegram channel](https://t.me/fbs_org_official)
 
 ## Thanks
 

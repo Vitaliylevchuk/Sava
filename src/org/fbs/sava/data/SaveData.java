@@ -1,5 +1,7 @@
 package org.fbs.sava.data;
 
+import java.util.List;
+
 public class SaveData {
 
     public SaveData(int id, String name, SaveType type){
@@ -30,7 +32,7 @@ public class SaveData {
     public Class<?>[] getValueClasses(){
         return null;
     }
-    public Object[] getValues() {
+    public List<Object> getValues() {
         return null;
     }
 }
