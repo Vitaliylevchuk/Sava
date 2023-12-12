@@ -56,7 +56,7 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
 
 ## Download
 
-You can download [Sava apk here](https://github.com/Vitaliylevchuk/Sava/releases).
+You can download [Sava jar here](https://github.com/Vitaliylevchuk/Sava/releases).
 
 ## Contact
 
