@@ -4,13 +4,15 @@ import java.util.List;
 
 public class SaveData {
 
-    public SaveData(int id, String name, SaveType type){
+    public SaveData(int id, String name, SaveType type, Class<?> valueClass){
         this.id = id;
         this.name = name;
         this.type = type;
+        this.valueClass = valueClass;
     }
 
     private final int id;
+    private final Class<?> valueClass;
     private final SaveType type;
     private final String name;
 
@@ -24,12 +26,14 @@ public class SaveData {
         return type;
     }
     public Class<?> getValueClass(){
-        return null;
+        return valueClass;
     }
     public Object getValue() {
         return null;
     }
+    @Deprecated
     public Class<?>[] getValueClasses(){
+        // CREATE: 11.12.23: create a struct with every element classification
         return null;
     }
     public List<Object> getValues() {

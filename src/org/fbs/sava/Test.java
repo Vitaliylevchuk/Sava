@@ -1,5 +1,6 @@
 package org.fbs.sava;
 
+import org.fbs.sava.data.SaveData;
 import org.fbs.sava.data.SaveFile;
 import org.fbs.sava.util.Compiler;
 
@@ -12,12 +13,10 @@ public class Test {
 
         Compiler compiler = new Compiler(new File("/home/vitaliy/IdeaProjects/Sava/test.sava"));
         SaveFile saveFile = compiler.getCompiledSave();
-        
 
-        System.out.println(saveFile.getAll().get(2).getName());
-
-        for(Object object: saveFile.getAll().get(2).getValues()) {
-            System.out.println(object);
+        for (SaveData data : saveFile.getAll()){
+            System.out.println(data);
         }
+
     }
 }

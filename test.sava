@@ -1,4 +1,4 @@
-val a int = 0;
-val b int = 2;
-array weekDays str { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+val a int = 6;
+val b double = 0.7678;
+array weekDays long { -89, 5467 };
 //Release soon

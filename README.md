@@ -13,7 +13,6 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
     * [Value types](#value-types)
     * [Starting](#starting)
   * [Download](#download)
-  * [Changelog](#changelog)
   * [Contact](#contact)
   * [Thanks](#thanks)
 <!-- TOC -->
@@ -30,6 +29,11 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
 | bool        | Boolean     |
 
 ### Value types
+
+* Use `.` with Double data
+* Use `""` with String data
+* Use `''` with Character data
+
 
 * **value**
 > Can store values of the same data type, can store both primitives and values of a custom data type and called with `val`.
@@ -52,11 +56,7 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
 
 ## Download
 
-You can download Sava here _see later_.
-
-## Changelog
-
-You can see Sava version changelog here _see later_.
+You can download [Sava apk here](https://github.com/Vitaliylevchuk/Sava/releases).
 
 ## Contact
 
