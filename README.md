@@ -38,7 +38,7 @@ Sava is a Java library for processing and saving the necessary data. With Sava, 
 * **value**
 > Can store values of the same data type, can store both primitives and values of a custom data type and called with `val`.
 
-> 100% worked syntax(with name "mothsCount", type Integer and value 12) `val int a = 12;`
+> 100% worked syntax(with name "mothsCount", type Integer and value 12) `val a int = 12;`
 -------------
 * **array**
 > Can store values of the same data type, You can access an element using: name, id or index, it can be called by `array`.
